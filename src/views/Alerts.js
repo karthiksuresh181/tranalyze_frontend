@@ -18,6 +18,8 @@ const axios = require("axios");
 function Alerts() {
   const [activeAlerts, setActiveAlerts] = React.useState([]);
   const [inActiveAlerts, setInActiveAlerts] = React.useState([]);
+  const [pairList, setPairList] = React.useState([]);
+  const [favouritePairList, setFavouritePairList] = React.useState([]);
   const [pairName, setPairName] = React.useState("");
   const [price, setPrice] = React.useState("");
 
@@ -44,11 +46,28 @@ function Alerts() {
         price: price,
       };
       axios
-        .post("http://localhost:9995/api/v1/alerts/set_alert", requestData)
+        .post("http://192.168.1.108:9995/api/v1/alerts/set_alert", requestData)
         .then((res) => {
           console.log(res.data);
+          getActiveAlerts();
         });
     }
+  };
+
+  const getPairList = () => {
+    axios
+      .get("http://192.168.1.108:9995/api/v1/futures/get_coin_list")
+      .then((res) => {
+        setPairList(res.data["symbols"]);
+      });
+  };
+
+  const getFavouritePairList = () => {
+    axios
+      .get("http://192.168.1.108:9995/api/v1/futures/get_favourite_pairs")
+      .then((res) => {
+        setFavouritePairList(res.data);
+      });
   };
 
   const cancelActiveAlert = (id) => {
@@ -83,11 +102,35 @@ function Alerts() {
   React.useEffect(() => {
     getActiveAlerts();
     getInActiveAlerts();
+    getPairList();
+    getFavouritePairList();
   }, []);
   return (
     <>
       <div className="content">
         <Row>
+          <Col md="3"></Col>
+          <Col md="2">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h2" className="text-center">
+                  Favourites
+                </CardTitle>
+              </CardHeader>
+              <CardBody>
+                <select
+                  className="form-control"
+                  size="10"
+                  value={pairName}
+                  onChange={(e) => setPairName(e.target.value)}
+                >
+                  {favouritePairList.map((item) => (
+                    <option value={item}>{item}</option>
+                  ))}
+                </select>
+              </CardBody>
+            </Card>
+          </Col>
           <Col md="2">
             <Card>
               <CardHeader>
@@ -103,6 +146,7 @@ function Alerts() {
                     type="text"
                     className="text-center"
                     onChange={(e) => setPairName(e.target.value)}
+                    value={pairName}
                   />
                   <label>Price</label>
                   <Input
@@ -118,6 +162,27 @@ function Alerts() {
                   Add Alert
                 </Button>
               </CardFooter>
+            </Card>
+          </Col>
+          <Col md="2">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h2" className="text-center">
+                  Pairs
+                </CardTitle>
+              </CardHeader>
+              <CardBody>
+                <select
+                  className="form-control"
+                  size="10"
+                  value={pairName}
+                  onChange={(e) => setPairName(e.target.value)}
+                >
+                  {pairList.map((item) => (
+                    <option value={item}>{item}</option>
+                  ))}
+                </select>
+              </CardBody>
             </Card>
           </Col>
         </Row>
