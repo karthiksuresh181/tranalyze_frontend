@@ -81,7 +81,7 @@ function AdminNavbar(props) {
   };
 
   const setAlert = () => {
-    if (searchPair != "" && priceValue != "") {
+    if (searchPair !== "" && priceValue !== "") {
       let requestData = {
         symbol: searchPair,
         price: priceValue,
@@ -139,10 +139,6 @@ function AdminNavbar(props) {
                   <i className="tim-icons icon-zoom-split" />
                   <span className="d-lg-none d-md-block">Search</span>
                 </Button>
-                <Button color="link" onClick={toggleModalAlert}>
-                  <i className="tim-icons icon-sound-wave" />
-                  <span className="d-lg-none d-md-block">Alerts</span>
-                </Button>
               </InputGroup>
               <UncontrolledDropdown nav>
                 <DropdownToggle
@@ -195,19 +191,19 @@ function AdminNavbar(props) {
         </ModalHeader>
       </Modal>
 
-      <Modal
+      {/*<Modal
         modalClassName="modal-black"
         isOpen={modalAlert}
         toggle={toggleModalAlert}
         size="sm"
       >
-        <ModalHeader>
+         <ModalHeader>
           <h2>Alerts</h2>
         </ModalHeader>
         <ModalBody>
           <FormGroup className="text-center">
             <label>Coin</label>
-            {/* <Select
+            <Select
               className="basic-single"
               classNamePrefix="select"
               value={searchPair}
@@ -215,7 +211,7 @@ function AdminNavbar(props) {
               options={searchPairResults}
               defaultValue={searchPairResults[0]}
               style={{ color: "black" }}
-            /> */}
+            />
             <Input
               placeholder="BTCUSDT"
               type="text"
@@ -238,7 +234,7 @@ function AdminNavbar(props) {
           </Button>
         </ModalFooter>
         <div style={{ height: "20px" }}></div>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
