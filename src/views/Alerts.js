@@ -99,6 +99,17 @@ function Alerts() {
       });
   };
 
+  const handlePairSelect = (e) => {
+    setPairName(e.target.value);
+    axios
+      .get(
+        `https://api.binance.com/api/v1/ticker/price?symbol=${e.target.value}`
+      )
+      .then((res) => {
+        setPrice(res.data["price"]);
+      });
+  };
+
   React.useEffect(() => {
     getActiveAlerts();
     getInActiveAlerts();
@@ -122,7 +133,7 @@ function Alerts() {
                   className="form-control"
                   size="10"
                   value={pairName}
-                  onChange={(e) => setPairName(e.target.value)}
+                  onChange={handlePairSelect}
                 >
                   {favouritePairList.map((item) => (
                     <option value={item}>{item}</option>
@@ -153,6 +164,7 @@ function Alerts() {
                     placeholder="41100"
                     type="text"
                     className="text-center"
+                    value={price}
                     onChange={(e) => setPrice(e.target.value)}
                   />
                 </FormGroup>
@@ -176,7 +188,7 @@ function Alerts() {
                   className="form-control"
                   size="10"
                   value={pairName}
-                  onChange={(e) => setPairName(e.target.value)}
+                  onChange={handlePairSelect}
                 >
                   {pairList.map((item) => (
                     <option value={item}>{item}</option>
