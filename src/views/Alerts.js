@@ -1,5 +1,5 @@
 import React from "react";
-
+import Swal from "sweetalert2";
 // reactstrap components
 import {
   Card,
@@ -15,6 +15,7 @@ import {
   CardFooter,
 } from "reactstrap";
 const axios = require("axios");
+
 function Alerts() {
   const [activeAlerts, setActiveAlerts] = React.useState([]);
   const [inActiveAlerts, setInActiveAlerts] = React.useState([]);
@@ -108,6 +109,26 @@ function Alerts() {
       .then((res) => {
         setPrice(res.data["price"]);
       });
+  };
+
+  const cancelAllActiveAlerts = () => {
+    axios
+      .get("http://192.168.1.108:9995/api/v1/alerts/cancel_active_alerts")
+      .then((res) => {
+        setActiveAlerts([]);
+      });
+  };
+
+  const clearAllInActiveAlerts = () => {
+    axios
+      .get("http://192.168.1.108:9995/api/v1/alerts/clear_inactive_alerts")
+      .then((res) => {
+        setInActiveAlerts([]);
+      });
+  };
+
+  const handleCancelActiveAlerts = () => {
+    Swal.fire("Good job!", "You clicked the button!", "success");
   };
 
   React.useEffect(() => {
@@ -207,7 +228,19 @@ function Alerts() {
                 </CardTitle>
                 <p className="category">Click on Cancel to Cancel the alert.</p>
                 <p style={{ textAlign: "right" }}>
-                  <Button className="btn-danger">Cancel All</Button>
+                  {activeAlerts.length > 0 && (
+                    <Button
+                      className="btn-danger"
+                      onClick={handleCancelActiveAlerts}
+                    >
+                      Cancel All
+                    </Button>
+                  )}
+                  {!activeAlerts.length && (
+                    <Button className="btn-danger" disabled>
+                      Cancel All
+                    </Button>
+                  )}
                 </p>
               </CardHeader>
               <CardBody>
@@ -220,20 +253,28 @@ function Alerts() {
                     </tr>
                   </thead>
                   <tbody>
-                    {activeAlerts.map((item) => (
+                    {activeAlerts.length > 0 &&
+                      activeAlerts.map((item) => (
+                        <tr>
+                          <td className="text-center">{item.symbol}</td>
+                          <td className="text-center">{item.price}</td>
+                          <td className="text-center">
+                            <Button
+                              className="btn-sm btn-danger"
+                              onClick={() => cancelActiveAlert(item.id)}
+                            >
+                              Cancel
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    {!activeAlerts.length && (
                       <tr>
-                        <td className="text-center">{item.symbol}</td>
-                        <td className="text-center">{item.price}</td>
-                        <td className="text-center">
-                          <Button
-                            className="btn-sm btn-danger"
-                            onClick={() => cancelActiveAlert(item.id)}
-                          >
-                            Cancel
-                          </Button>
+                        <td colSpan="3" className="text-center">
+                          <h4>No Active Alerts available at this moment.</h4>
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </Table>
               </CardBody>
@@ -262,20 +303,28 @@ function Alerts() {
                     </tr>
                   </thead>
                   <tbody>
-                    {inActiveAlerts.map((item) => (
+                    {inActiveAlerts.length > 0 &&
+                      inActiveAlerts.map((item) => (
+                        <tr>
+                          <td className="text-center">{item.symbol}</td>
+                          <td className="text-center">{item.price}</td>
+                          <td className="text-center">
+                            <Button
+                              className="btn-sm btn-success"
+                              onClick={() => activateInactiveAlert(item.id)}
+                            >
+                              Activate
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    {!inActiveAlerts.length && (
                       <tr>
-                        <td className="text-center">{item.symbol}</td>
-                        <td className="text-center">{item.price}</td>
-                        <td className="text-center">
-                          <Button
-                            className="btn-sm btn-success"
-                            onClick={() => activateInactiveAlert(item.id)}
-                          >
-                            Activate
-                          </Button>
+                        <td colSpan="3" className="text-center">
+                          <h4>No Active Alerts available at this moment.</h4>
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </Table>
               </CardBody>

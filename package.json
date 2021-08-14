@@ -5,6 +5,7 @@
   "homepage": "https://demos.creative-tim.com/black-dashboard-react/#/admin/dashboard",
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.1",
+    "@sweetalert2/themes": "^5.0.2",
     "axios": "^0.21.1",
     "bootstrap": "4.5.3",
     "chart.js": "2.9.4",
@@ -21,7 +22,8 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.1",
     "react-select": "^4.3.1",
-    "reactstrap": "8.7.1"
+    "reactstrap": "8.7.1",
+    "sweetalert2": "^11.1.2"
   },
   "scripts": {
     "start": "react-scripts start",

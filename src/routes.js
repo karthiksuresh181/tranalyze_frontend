@@ -1,11 +1,11 @@
 import Dashboard from "views/Dashboard.js";
 import Icons from "views/Icons.js";
-import Map from "views/Map.js";
 import Alerts from "views/Alerts.js";
 import Notifications from "views/Notifications.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
+import Trade from "views/Trade.js";
 
 var routes = [
   {
@@ -18,15 +18,15 @@ var routes = [
   {
     path: "/alerts",
     name: "Alerts",
-    icon: "tim-icons icon-alert-circle-exc",
+    icon: "fa fa-bell fa-2x",
     component: Alerts,
     layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "Icons",
-    icon: "tim-icons icon-atom",
-    component: Icons,
+    path: "/trade",
+    name: "Trade",
+    icon: "fa fa-chart-bar",
+    component: Trade,
     layout: "/admin",
   },
   {
