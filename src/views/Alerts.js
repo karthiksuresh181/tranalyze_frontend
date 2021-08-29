@@ -1,9 +1,12 @@
 import React from "react";
 import Swal from "sweetalert2";
+
+import NotificationAlert from "react-notification-alert";
 // reactstrap components
 import {
   Card,
   CardHeader,
+  UncontrolledAlert,
   CardBody,
   CardTitle,
   Table,
@@ -23,6 +26,24 @@ function Alerts() {
   const [favouritePairList, setFavouritePairList] = React.useState([]);
   const [pairName, setPairName] = React.useState("");
   const [price, setPrice] = React.useState("");
+
+  const notificationAlertRef = React.useRef(null);
+  const notify = (message, type) => {
+    var type = type;
+    var options = {};
+    options = {
+      place: "br",
+      message: (
+        <div>
+          <div>{message}</div>
+        </div>
+      ),
+      type: type,
+      icon: "tim-icons icon-bell-55",
+      autoDismiss: 3,
+    };
+    notificationAlertRef.current.notificationAlert(options);
+  };
 
   const getActiveAlerts = () => {
     axios
@@ -50,6 +71,7 @@ function Alerts() {
         .post(`${process.env.REACT_APP_API_HOST}/alerts/set_alert`, requestData)
         .then((res) => {
           getActiveAlerts();
+          notify("Alert Added Successfully.", "success");
         });
     }
   };
@@ -81,6 +103,7 @@ function Alerts() {
       )
       .then((res) => {
         getActiveAlerts();
+        notify("Alert Cancelled Successfully.", "success");
       });
   };
 
@@ -96,6 +119,7 @@ function Alerts() {
       .then((res) => {
         getActiveAlerts();
         getInActiveAlerts();
+        notify("Alert Re-Activated Successfully.", "success");
       });
   };
 
@@ -115,6 +139,7 @@ function Alerts() {
       .get(`${process.env.REACT_APP_API_HOST}/alerts/cancel_active_alerts`)
       .then((res) => {
         setActiveAlerts([]);
+        notify("All Active Alerts Have Been Cancelled Successfully", "success");
       });
   };
 
@@ -123,15 +148,7 @@ function Alerts() {
       .get(`${process.env.REACT_APP_API_HOST}/alerts/clear_inactive_alerts`)
       .then(() => {
         setInActiveAlerts([]);
-      });
-  };
-
-  const handleCancelActiveAlerts = () => {
-    // Swal.fire("Good job!", "You clicked the button!", "success");
-    axios
-      .get(`${process.env.REACT_APP_API_HOST}/alerts/cancel_active_alerts`)
-      .then(() => {
-        setActiveAlerts([]);
+        notify("All Active Alerts Have Been Cancelled Successfully", "success");
       });
   };
 
@@ -144,6 +161,9 @@ function Alerts() {
   return (
     <>
       <div className="content">
+        <div className="react-notification-alert-container">
+          <NotificationAlert ref={notificationAlertRef} />
+        </div>
         <Row>
           <Col md="3"></Col>
           <Col md="2">
@@ -230,22 +250,45 @@ function Alerts() {
                 <CardTitle tag="h2" className="text-center">
                   Active Alerts
                 </CardTitle>
-                <p className="category">Click on Cancel to Cancel the alert.</p>
-                <p style={{ textAlign: "right" }}>
-                  {activeAlerts.length > 0 && (
-                    <Button
-                      className="btn-danger"
-                      onClick={handleCancelActiveAlerts}
-                    >
-                      Cancel All
-                    </Button>
-                  )}
-                  {!activeAlerts.length && (
-                    <Button className="btn-danger" disabled>
-                      Cancel All
-                    </Button>
-                  )}
-                </p>
+                <Row>
+                  <Col md="5">
+                    <p className="category">
+                      Click on Cancel to Cancel the alert.
+                    </p>
+                  </Col>
+                  <Col>
+                    <p style={{ textAlign: "right" }}>
+                      {activeAlerts.length > 0 && (
+                        <Button
+                          className="btn-round"
+                          color="danger"
+                          onClick={cancelAllActiveAlerts}
+                        >
+                          <i
+                            className="tim-icons icon-simple-remove"
+                            style={{
+                              paddingBottom: "4px",
+                              paddingRight: "5px",
+                            }}
+                          />
+                          Cancel All
+                        </Button>
+                      )}
+                      {!activeAlerts.length && (
+                        <Button className="btn-round" color="danger" disabled>
+                          <i
+                            className="tim-icons icon-simple-remove"
+                            style={{
+                              paddingBottom: "4px",
+                              paddingRight: "5px",
+                            }}
+                          />
+                          Cancel All
+                        </Button>
+                      )}
+                    </p>
+                  </Col>
+                </Row>
               </CardHeader>
               <CardBody>
                 <Table className="tablesorter" responsive>
@@ -290,24 +333,45 @@ function Alerts() {
                 <CardTitle tag="h2" className="text-center">
                   Expired Alerts
                 </CardTitle>
-                <p className="category">
-                  Click on Activate to activate the alert again.
-                </p>
-                <p style={{ textAlign: "right" }}>
-                  {inActiveAlerts.length > 0 && (
-                    <Button
-                      className="btn-danger"
-                      onClick={clearAllInActiveAlerts}
-                    >
-                      Clear All
-                    </Button>
-                  )}
-                  {!inActiveAlerts.length && (
-                    <Button className="btn-danger" disabled>
-                      Clear All
-                    </Button>
-                  )}
-                </p>
+                <Row>
+                  <Col md="5">
+                    <p className="category">
+                      Click on Activate to activate the alert again.
+                    </p>
+                  </Col>
+                  <Col>
+                    <p style={{ textAlign: "right" }}>
+                      {inActiveAlerts.length > 0 && (
+                        <Button
+                          className="btn-round"
+                          danger="danger"
+                          onClick={clearAllInActiveAlerts}
+                        >
+                          <i
+                            className="tim-icons icon-simple-remove"
+                            style={{
+                              paddingBottom: "4px",
+                              paddingRight: "5px",
+                            }}
+                          />
+                          Clear All
+                        </Button>
+                      )}
+                      {!inActiveAlerts.length && (
+                        <Button className="btn-round" color="danger" disabled>
+                          <i
+                            className="tim-icons icon-simple-remove"
+                            style={{
+                              paddingBottom: "4px",
+                              paddingRight: "5px",
+                            }}
+                          />
+                          Clear All
+                        </Button>
+                      )}
+                    </p>
+                  </Col>
+                </Row>
               </CardHeader>
               <CardBody>
                 <Table className="tablesorter" responsive>
