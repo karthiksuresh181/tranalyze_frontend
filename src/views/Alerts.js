@@ -49,7 +49,6 @@ function Alerts() {
       axios
         .post(`${process.env.REACT_APP_API_HOST}/alerts/set_alert`, requestData)
         .then((res) => {
-          console.log(res.data);
           getActiveAlerts();
         });
     }
@@ -104,7 +103,7 @@ function Alerts() {
     setPairName(e.target.value);
     axios
       .get(
-        `${process.env.REACT_APP_API_HOST}/ticker/price?symbol=${e.target.value}`
+        `https://www.binance.com/fapi/v1/ticker/price?symbol=${e.target.value}`
       )
       .then((res) => {
         setPrice(res.data["price"]);
@@ -122,13 +121,18 @@ function Alerts() {
   const clearAllInActiveAlerts = () => {
     axios
       .get(`${process.env.REACT_APP_API_HOST}/alerts/clear_inactive_alerts`)
-      .then((res) => {
+      .then(() => {
         setInActiveAlerts([]);
       });
   };
 
   const handleCancelActiveAlerts = () => {
-    Swal.fire("Good job!", "You clicked the button!", "success");
+    // Swal.fire("Good job!", "You clicked the button!", "success");
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/alerts/cancel_active_alerts`)
+      .then(() => {
+        setActiveAlerts([]);
+      });
   };
 
   React.useEffect(() => {
@@ -290,7 +294,19 @@ function Alerts() {
                   Click on Activate to activate the alert again.
                 </p>
                 <p style={{ textAlign: "right" }}>
-                  <Button className="btn-danger">Clear All</Button>
+                  {inActiveAlerts.length > 0 && (
+                    <Button
+                      className="btn-danger"
+                      onClick={clearAllInActiveAlerts}
+                    >
+                      Clear All
+                    </Button>
+                  )}
+                  {!inActiveAlerts.length && (
+                    <Button className="btn-danger" disabled>
+                      Clear All
+                    </Button>
+                  )}
                 </p>
               </CardHeader>
               <CardBody>
