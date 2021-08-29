@@ -54,6 +54,7 @@ function Dashboard(props) {
   const [bigChartData, setbigChartData] = React.useState("data1");
   const setBgChartData = (name) => {
     setbigChartData(name);
+    console.log(chartExample3);
   };
   return (
     <>

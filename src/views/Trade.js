@@ -61,8 +61,8 @@ function Alerts() {
                         <tr>
                           <td className="text-center">{item.symbol}</td>
                           <td className="text-center">{item.entryPrice}</td>
-                          <td className="text-center"></td>
-                          <td className="text-center"></td>
+                          <td className="text-center">{item.stop_limit}</td>
+                          <td className="text-center">{item.limit}</td>
                           <td
                             className="text-center"
                             style={{ maxWidth: "100px" }}
@@ -70,7 +70,7 @@ function Alerts() {
                             <Input type="number"></Input>
                           </td>
                           <td className="text-center">
-                            {item.unrealizedProfit}
+                            <div className="pnl">{item.unrealizedProfit}</div>
                           </td>
                           <td className="text-center">{item.initialMargin}</td>
                         </tr>

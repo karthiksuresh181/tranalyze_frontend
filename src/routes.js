@@ -1,4 +1,5 @@
 import Dashboard from "views/Dashboard.js";
+import DashboardCustom from "views/DashboardCustom";
 import Icons from "views/Icons.js";
 import Alerts from "views/Alerts.js";
 import Notifications from "views/Notifications.js";
@@ -12,7 +13,7 @@ var routes = [
     path: "/dashboard",
     name: "Dashboard",
     icon: "tim-icons icon-chart-pie-36",
-    component: Dashboard,
+    component: DashboardCustom,
     layout: "/admin",
   },
   {
@@ -40,7 +41,7 @@ var routes = [
     path: "/user-profile",
     name: "User Profile",
     icon: "tim-icons icon-single-02",
-    component: UserProfile,
+    component: Dashboard,
     layout: "/admin",
   },
   {

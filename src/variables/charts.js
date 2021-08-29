@@ -278,6 +278,17 @@ let chartExample3 = {
           borderDashOffset: 0.0,
           data: [53, 20, 10, 80, 100, 45],
         },
+        {
+          label: "Countries 2",
+          fill: true,
+          backgroundColor: gradientStroke,
+          hoverBackgroundColor: gradientStroke,
+          borderColor: "#e048b6",
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 1.0,
+          data: [53, 20, 10, 80, 100, 45],
+        },
       ],
     };
   },
