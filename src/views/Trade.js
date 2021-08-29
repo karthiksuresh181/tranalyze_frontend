@@ -21,7 +21,7 @@ function Alerts() {
 
   const getActiveAlerts = () => {
     axios
-      .get("http://192.168.1.108:9995/api/v1/futures/get_positions")
+      .get(`${process.env.REACT_APP_API_HOST}/futures/get_positions`)
       .then((res) => {
         setPositions(res.data);
       });

@@ -26,7 +26,7 @@ function Alerts() {
 
   const getActiveAlerts = () => {
     axios
-      .get("http://192.168.1.108:9995/api/v1/alerts/get_active_alerts")
+      .get(`${process.env.REACT_APP_API_HOST}/alerts/get_active_alerts`)
       .then((res) => {
         setActiveAlerts(res.data);
       });
@@ -34,7 +34,7 @@ function Alerts() {
 
   const getInActiveAlerts = () => {
     axios
-      .get("http://192.168.1.108:9995/api/v1/alerts/get_inactive_alerts")
+      .get(`${process.env.REACT_APP_API_HOST}/alerts/get_inactive_alerts`)
       .then((res) => {
         setInActiveAlerts(res.data);
       });
@@ -47,7 +47,7 @@ function Alerts() {
         price: price,
       };
       axios
-        .post("http://192.168.1.108:9995/api/v1/alerts/set_alert", requestData)
+        .post(`${process.env.REACT_APP_API_HOST}/alerts/set_alert`, requestData)
         .then((res) => {
           console.log(res.data);
           getActiveAlerts();
@@ -57,7 +57,7 @@ function Alerts() {
 
   const getPairList = () => {
     axios
-      .get("http://192.168.1.108:9995/api/v1/futures/get_coin_list")
+      .get(`${process.env.REACT_APP_API_HOST}/futures/get_coin_list`)
       .then((res) => {
         setPairList(res.data["symbols"]);
       });
@@ -65,7 +65,7 @@ function Alerts() {
 
   const getFavouritePairList = () => {
     axios
-      .get("http://192.168.1.108:9995/api/v1/futures/get_favourite_pairs")
+      .get(`${process.env.REACT_APP_API_HOST}/futures/get_favourite_pairs`)
       .then((res) => {
         setFavouritePairList(res.data);
       });
@@ -77,7 +77,7 @@ function Alerts() {
     };
     axios
       .post(
-        "http://192.168.1.108:9995/api/v1/alerts/cancel_active_alert",
+        `${process.env.REACT_APP_API_HOST}/alerts/cancel_active_alert`,
         requestData
       )
       .then((res) => {
@@ -91,7 +91,7 @@ function Alerts() {
     };
     axios
       .post(
-        "http://192.168.1.108:9995/api/v1/alerts/activate_inactive_alert",
+        `${process.env.REACT_APP_API_HOST}/alerts/activate_inactive_alert`,
         requestData
       )
       .then((res) => {
@@ -104,7 +104,7 @@ function Alerts() {
     setPairName(e.target.value);
     axios
       .get(
-        `https://api.binance.com/api/v1/ticker/price?symbol=${e.target.value}`
+        `${process.env.REACT_APP_API_HOST}/ticker/price?symbol=${e.target.value}`
       )
       .then((res) => {
         setPrice(res.data["price"]);
@@ -113,7 +113,7 @@ function Alerts() {
 
   const cancelAllActiveAlerts = () => {
     axios
-      .get("http://192.168.1.108:9995/api/v1/alerts/cancel_active_alerts")
+      .get(`${process.env.REACT_APP_API_HOST}/alerts/cancel_active_alerts`)
       .then((res) => {
         setActiveAlerts([]);
       });
@@ -121,7 +121,7 @@ function Alerts() {
 
   const clearAllInActiveAlerts = () => {
     axios
-      .get("http://192.168.1.108:9995/api/v1/alerts/clear_inactive_alerts")
+      .get(`${process.env.REACT_APP_API_HOST}/alerts/clear_inactive_alerts`)
       .then((res) => {
         setInActiveAlerts([]);
       });

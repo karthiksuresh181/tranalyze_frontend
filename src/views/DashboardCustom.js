@@ -79,7 +79,7 @@ function DashboardCustom(props) {
 
   const getPnlData = () => {
     axios
-      .get("http://192.168.0.106:9995/api/v1/futures/get_pnl_data")
+      .get(`${process.env.REACT_APP_API_HOST}/futures/get_pnl_data`)
       .then((res) => {
         setPnlChartData({
           labels: res.data["labels"],
