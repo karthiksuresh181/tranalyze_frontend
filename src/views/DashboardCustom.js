@@ -27,6 +27,7 @@ import {
 const axios = require("axios");
 
 function DashboardCustom(props) {
+  const [bigChartData, setbigChartData] = React.useState("data1");
   const [pnlChartData, setPnlChartData] = React.useState({});
 
   let options = {
@@ -77,9 +78,19 @@ function DashboardCustom(props) {
     },
   };
 
-  const getPnlData = () => {
+  const getPnlData = (timePeriod) => {
+    if (timePeriod === "week") setbigChartData("data1");
+    else if (timePeriod === "month") setbigChartData("data2");
+    else setbigChartData("data3");
+
+    let requestData = {
+      timePeriod: timePeriod,
+    };
     axios
-      .get(`${process.env.REACT_APP_API_HOST}/futures/get_pnl_data`)
+      .post(
+        `${process.env.REACT_APP_API_HOST}/futures/get_pnl_data`,
+        requestData
+      )
       .then((res) => {
         setPnlChartData({
           labels: res.data["labels"],
@@ -123,7 +134,7 @@ function DashboardCustom(props) {
   };
 
   React.useEffect(() => {
-    getPnlData();
+    getPnlData("week");
   }, []);
 
   return (
@@ -145,13 +156,13 @@ function DashboardCustom(props) {
                     >
                       <Button
                         tag="label"
-                        // className={classNames("btn-simple", {
-                        //   active: bigChartData === "data1",
-                        // })}
+                        className={classNames("btn-simple", {
+                          active: bigChartData === "data1",
+                        })}
                         color="info"
                         id="0"
                         size="sm"
-                        // onClick={() => setBgChartData("data1")}
+                        onClick={() => getPnlData("week")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                           7 days
@@ -165,10 +176,10 @@ function DashboardCustom(props) {
                         id="1"
                         size="sm"
                         tag="label"
-                        // className={classNames("btn-simple", {
-                        //   active: bigChartData === "data2",
-                        // })}
-                        // onClick={() => setBgChartData("data2")}
+                        className={classNames("btn-simple", {
+                          active: bigChartData === "data2",
+                        })}
+                        onClick={() => getPnlData("month")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                           30 days
@@ -182,10 +193,10 @@ function DashboardCustom(props) {
                         id="2"
                         size="sm"
                         tag="label"
-                        // className={classNames("btn-simple", {
-                        //   active: bigChartData === "data3",
-                        // })}
-                        // onClick={() => setBgChartData("data3")}
+                        className={classNames("btn-simple", {
+                          active: bigChartData === "data3",
+                        })}
+                        onClick={() => getPnlData("months")}
                       >
                         <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
                           3 months
